@@ -17,16 +17,16 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "tx_is_active", length = 40)
+    @Column(name = "is_active", length = 40)
     private Boolean isActive;
-    @Column(name = "tx_created_at")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @Column(name = "tx_email_address", length = 40)
+    @Column(name = "email_address", length = 40)
     @Email
     private String emailAddress;
-    @Column(name = "tx_password", length = 40)
+    @Column(name = "password")
     private String password;
-    @Column(name = "tx_account_status", length = 40)
+    @Column(name = "account_status", length = 40)
     private String accountStatus;
 
     @OneToOne(mappedBy = "account")

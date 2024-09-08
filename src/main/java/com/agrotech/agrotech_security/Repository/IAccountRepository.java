@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IAccountRepository extends JpaRepository<Account, Long> {
     Account findByEmailAddressAndPassword(String emailAddress, String password);
+    Account findByEmailAddress(String emailAddress);
 }

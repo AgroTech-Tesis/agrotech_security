@@ -15,11 +15,11 @@ public class Farmer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "tx_name", length = 40)
+    @Column(name = "name", length = 40)
     private String name;
-    @Column(name = "tx_address", length = 40)
+    @Column(name = "address", length = 40)
     private String address;
-    @Column(name = "tx_phone_number", length = 40)
+    @Column(name = "phone_number", length = 40)
     private String phoneNumber;
 
     @OneToOne(cascade = CascadeType.ALL)

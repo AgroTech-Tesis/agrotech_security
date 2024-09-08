@@ -6,6 +6,8 @@ import com.agrotech.agrotech_security.Repository.IAccountRepository;
 import com.agrotech.agrotech_security.Services.Interfaces.IAccountService;
 import com.agrotech.agrotech_security.Util.Shared.constants.Constants;
 import com.agrotech.agrotech_security.Util.Shared.exception.ResourceNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,27 +17,22 @@ import java.util.List;
 @Service
 public class AccountServiceImpl implements IAccountService {
     private final IAccountRepository accountRepository;
+    PasswordEncoder passwordEncoder;
 
     public AccountServiceImpl(IAccountRepository accountRepository) {
         this.accountRepository = accountRepository;
+        passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
     public Account SignIn(SignInDto signInDto) {
-        Account account = accountRepository.findByEmailAddressAndPassword(signInDto.getEmailAddress(), signInDto.getPassword());
+        Account account = accountRepository.findByEmailAddress(signInDto.getEmailAddress());
         if (account == null)
-            throw new ResourceNotFoundException("Account is exist");
-        try {
-            //Account newAccount = new Account();
-            //newAccount.setEmailAddress(signInDto.getEmailAddress());
-            //newAccount.setPassword(signInDto.getPassword());
-            //newAccount.setCreatedAt(LocalDateTime.now(ZoneId.of(Constants.TIME_ZONE_DEFAULT)));
-            //newAccount.setIsActive(true);
-            //newAccount.setAccountStatus(Constants.STATUS_ACTIVE);
-            //accountRepository.save(newAccount);
+            throw new ResourceNotFoundException("The email address is incorrect");
+        boolean isPasswordMatch = passwordEncoder.matches(signInDto.getPassword(), account.getPassword());
+        if(isPasswordMatch)
             return account;
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Error");
-        }
+        else
+            throw new ResourceNotFoundException("Password is incorrect");
     }
 }
