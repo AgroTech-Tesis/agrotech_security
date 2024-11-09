@@ -28,11 +28,11 @@ public class AccountServiceImpl implements IAccountService {
     public Account SignIn(SignInDto signInDto) {
         Account account = accountRepository.findByEmailAddress(signInDto.getEmailAddress());
         if (account == null)
-            throw new ResourceNotFoundException("The email address is incorrect");
+            throw new ResourceNotFoundException("Incorrect Email");
         boolean isPasswordMatch = passwordEncoder.matches(signInDto.getPassword(), account.getPassword());
         if(isPasswordMatch)
             return account;
         else
-            throw new ResourceNotFoundException("Password is incorrect");
+            throw new ResourceNotFoundException("Incorrect Password");
     }
 }
